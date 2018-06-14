@@ -8,7 +8,7 @@
 		function test()
 		{
 			$data = "";
-			$this->admin($data);
+			$this->public_jqm($data);
 		}
 		function public_bootstrap($data)
 		{
