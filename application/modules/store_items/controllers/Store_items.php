@@ -11,11 +11,20 @@
 			$this->site_security->_make_sure_is_admin();
 			$update_id = $this->uri->segment(3);
 			$submit = $this->input->post('submit', TRUE);
-			if ($submit == "Submit")
+			if ($submit == "Zapisz")
 			{
 				//process the form
+				$this->load->library('form_validation');
+				$this->form_validation->set_rules('item_title', 'Nazwa produktu', 'required|max_length[240]');
+				$this->form_validation->set_rules('item_price', 'Item Price', 'required|numeric');
+				$this->form_validation->set_rules('was_price', 'Was Price', 'numeric');
+				$this->form_validation->set_rules('item_description', 'Item Description', 'required');
+				if ($this->form_validation->run() == TRUE)
+				{
+					echo "KURWA"; die();
+				}
 			}
-			if ((is_numeric($update_id)) && ($submit!="Submit"))
+			if ((is_numeric($update_id)) && ($submit!="Zapisz"))
 			{
 				$data = $this->fetch_data_from_db($update_id);
 			}else

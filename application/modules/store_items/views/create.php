@@ -1,5 +1,5 @@
  <h1><?= $headline ?></h1>
-
+<?= validation_errors("<p style='color: red;'>", "</p>") ?>
 <div class="row-fluid sortable">
 				<div class="box span12">
 					<div class="box-header" data-original-title>
@@ -11,10 +11,10 @@
 						</div>
 					</div>
 					<div class="box-content">
-						<form class="form-horizontal" action="<?php echo base_url(); ?>store_items/create">
+						<form class="form-horizontal" method="post" action="<?php echo base_url(); ?>store_items/create">
 						  <fieldset>
 							<div class="control-group">
-							  <label class="control-label" for="typeahead">Nazwa produktu </label>
+							  <label class="control-label" for="typeahead">Nazwa produktu</label>
 							  <div class="controls">
 									<input type="text" class="span6" name="item_title" value="<?= $item_title ?>">
 							  </div>
@@ -42,7 +42,7 @@
 							  </div>
 							</div>
 							<div class="form-actions">
-							  <button type="submit" class="btn btn-primary" name="submit" value="Submit">Zapisz zmiany</button>
+							  <button type="submit" class="btn btn-primary" name="submit" value="Zapisz">Zapisz</button>
 							  <button type="reset" class="btn">Anuluj</button>
 							</div>
 						  </fieldset>
