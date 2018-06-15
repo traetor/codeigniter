@@ -1,0 +1,1 @@
+<h1>Zarządzaj produktami</h1>
