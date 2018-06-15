@@ -1,4 +1,4 @@
-<h1>Add New Item</h1>
+ <h1>Add New Item</h1>
 
 <div class="row-fluid sortable">
 				<div class="box span12">

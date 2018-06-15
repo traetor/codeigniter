@@ -5,13 +5,23 @@
 		{
 			parent::__construct();
 		}
+		function create()
+		{
+			$this->load->module('site_security');
+			$this->site_security->_make_sure_is_admin();
+			$data['view_module'] = "store_items";
+			$data['view_file'] = "create";
+			$this->load->module('templates');
+			$this->templates->admin($data);
+		}
 		function manage()
 		{
 			$this->load->module('site_security');
 			$this->site_security->_make_sure_is_admin();
+			$data['view_module'] = "store_items";
 			$data['view_file'] = "manage";
-			$this->load->module('template');
-			$this->template->admin($data);
+			$this->load->module('templates');
+			$this->templates->admin($data);
 		}
 		function get($order_by)
 		{
