@@ -7,6 +7,7 @@
 		}
 		function create()
 		{
+			$this->load->library('session');
 			$this->load->module('site_security');
 			$this->site_security->_make_sure_is_admin();
 			$update_id = $this->uri->segment(3);
@@ -16,12 +17,31 @@
 				//process the form
 				$this->load->library('form_validation');
 				$this->form_validation->set_rules('item_title', 'Nazwa produktu', 'required|max_length[240]');
-				$this->form_validation->set_rules('item_price', 'Item Price', 'required|numeric');
-				$this->form_validation->set_rules('was_price', 'Was Price', 'numeric');
-				$this->form_validation->set_rules('item_description', 'Item Description', 'required');
+				$this->form_validation->set_rules('item_price', 'Cena produktu', 'required|numeric');
+				$this->form_validation->set_rules('was_price', 'Stara cena', 'numeric');
+				$this->form_validation->set_rules('item_description', 'Opis produktu', 'required');
 				if ($this->form_validation->run() == TRUE)
 				{
-					echo "KURWA"; die();
+					//get the varables
+					$data = $this->fetch_data_from_post();
+					if (is_numeric($update_id))
+					{
+						//update the item details
+						$this->_update($update_id, $data);
+						$flash_msg = "Produkt został zaktualizowany pomyślnie!";
+						$value = '<div class="alert alert-success" role="alert">'.$flash_msg.'</div>';
+						$this->session->set_flashdata('item', $value);
+						redirect('store_items/create/'.$update_id);
+					}else
+					{
+						//insert a new item
+						$this->_insert($data);
+						$update_id = $this->get_max(); //get the ID of the new item
+						$flash_msg = "Produkt został dodany pomyślnie!";
+						$value = '<div class="alert alert-success" role="alert">'.$flash_msg.'</div>';
+						$this->session->set_flashdata('item', $value);
+						redirect('store_items/create/'.$update_id);
+					}
 				}
 			}
 			if ((is_numeric($update_id)) && ($submit!="Zapisz"))
@@ -38,6 +58,8 @@
 			{
 				$data['headline'] = "Zaktualizuj szczegóły produktu";
 			}
+			$data['update_id'] = $update_id;
+			$data['flash'] = $this->session->flashdata('item');
 			$data['view_module'] = "store_items";
 			$data['view_file'] = "create";
 			$this->load->module('templates');

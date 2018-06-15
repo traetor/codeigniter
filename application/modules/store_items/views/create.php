@@ -1,5 +1,11 @@
  <h1><?= $headline ?></h1>
 <?= validation_errors("<p style='color: red;'>", "</p>") ?>
+<?php 
+	if (isset($flash))
+	{
+		echo $flash;
+	}
+?>
 <div class="row-fluid sortable">
 				<div class="box span12">
 					<div class="box-header" data-original-title>
@@ -11,7 +17,10 @@
 						</div>
 					</div>
 					<div class="box-content">
-						<form class="form-horizontal" method="post" action="<?php echo base_url(); ?>store_items/create">
+						<?php 
+							$form_location = base_url()."store_items/create/".$update_id;
+						?>
+						<form class="form-horizontal" method="post" action="<?= $form_location ?>store_items/create">
 						  <fieldset>
 							<div class="control-group">
 							  <label class="control-label" for="typeahead">Nazwa produktu</label>
