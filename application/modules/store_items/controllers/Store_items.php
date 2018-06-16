@@ -15,11 +15,11 @@
 			if ($submit == "Zapisz")
 			{
 				//process the form
-				$this->load->library('form_validation');
-				$this->form_validation->set_rules('item_title', 'Nazwa produktu', 'required|max_length[240]');
-				$this->form_validation->set_rules('item_price', 'Cena produktu', 'required|numeric');
-				$this->form_validation->set_rules('was_price', 'Stara cena', 'numeric');
-				$this->form_validation->set_rules('item_description', 'Opis produktu', 'required');
+				 $this->load->library('form_validation');
+				 $this->form_validation->set_rules('item_title', 'Nazwa produktu', 'required|max_length[240]');
+				 $this->form_validation->set_rules('item_price', 'Cena produktu', 'required|numeric');
+				 $this->form_validation->set_rules('was_price', 'Stara cena', 'numeric');
+				 $this->form_validation->set_rules('item_description', 'Opis produktu', 'required');
 				if ($this->form_validation->run() == TRUE)
 				{
 					//get the varables

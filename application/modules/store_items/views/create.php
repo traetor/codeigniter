@@ -20,7 +20,7 @@
 						<?php 
 							$form_location = base_url()."store_items/create/".$update_id;
 						?>
-						<form class="form-horizontal" method="post" action="<?= $form_location ?>store_items/create">
+						<form class="form-horizontal" method="post" action="<?= $form_location ?>">
 						  <fieldset>
 							<div class="control-group">
 							  <label class="control-label" for="typeahead">Nazwa produktu</label>
@@ -43,11 +43,7 @@
 							<div class="control-group hidden-phone">
 							  <label class="control-label" for="textarea2">Opis produktu</label>
 							  <div class="controls">
-								<textarea class="cleditor" id="textarea2" rows="3" name="item_description">
-									<?php
-										echo $item_description;
-									?>
-								</textarea>
+								<textarea class="cleditor" id="textarea2" rows="3" name="item_description"><?php echo $item_description; ?></textarea>
 							  </div>
 							</div>
 							<div class="form-actions">
