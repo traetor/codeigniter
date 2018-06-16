@@ -4,7 +4,10 @@
 		function __construct()
 		{
 			parent::__construct();
+			$this->load->library('form_validation');
+    	$this->form_validation->CI =& $this;
 		}
+
 		function create()
 		{
 			$this->load->library('session');
@@ -12,11 +15,15 @@
 			$this->site_security->_make_sure_is_admin();
 			$update_id = $this->uri->segment(3);
 			$submit = $this->input->post('submit', TRUE);
+			if ($submit == "Anuluj")
+			{
+				redirect('store_items/manage');
+			}
 			if ($submit == "Zapisz")
 			{
 				//process the form
 				 $this->load->library('form_validation');
-				 $this->form_validation->set_rules('item_title', 'Nazwa produktu', 'required|max_length[240]');
+				 $this->form_validation->set_rules('item_title', 'Nazwa produktu', 'required|max_length[240]|callback_item_check');
 				 $this->form_validation->set_rules('item_price', 'Cena produktu', 'required|numeric');
 				 $this->form_validation->set_rules('was_price', 'Stara cena', 'numeric');
 				 $this->form_validation->set_rules('item_description', 'Opis produktu', 'required');
@@ -24,6 +31,7 @@
 				{
 					//get the varables
 					$data = $this->fetch_data_from_post();
+					$data['item_url'] = url_title($data['item_title']);
 					if (is_numeric($update_id))
 					{
 						//update the item details
@@ -65,6 +73,7 @@
 			$this->load->module('templates');
 			$this->templates->admin($data);
 		}
+
 		function manage()
 		{
 			$this->load->module('site_security');
@@ -74,6 +83,7 @@
 			$this->load->module('templates');
 			$this->templates->admin($data);
 		}
+
 		function fetch_data_from_post()
 		{
 			$data['item_title'] = $this->input->post('item_title', TRUE);
@@ -82,6 +92,7 @@
 			$data['item_description'] = $this->input->post('item_description', TRUE);
 			return $data;
 		}
+
 		function fetch_data_from_db($update_id)
 		{
 			$query = $this->get_where($update_id);
@@ -101,12 +112,14 @@
 			}
 			return $data;
 		}
+
 		function get($order_by)
 		{
 			$this->load->model('Mdl_store_items');
 			$query = $this->Mdl_store_items->get($order_by);
 			return $query;
 		}
+
 		//test
 		function get_with_limit($limit, $offset, $order_by)
 		{
@@ -114,49 +127,79 @@
 			$query = $this->Mdl_store_items->get_with_limit($limit, $offset, $order_by);
 			return $query;
 		}
+
 		function get_where($id)
 		{
 			$this->load->model('Mdl_store_items');
 			$query = $this->Mdl_store_items->get_where($id);
 			return $query;
 		}
+
 		function get_where_custom($col, $value)
 		{
 			$this->load->model('Mdl_store_items');
 			$query = $this->Mdl_store_items->get_where_custom($col, $value);
 		}
+
 		function _insert($data)
 		{
 			$this->load->model('Mdl_store_items');
 			$this->Mdl_store_items->_insert($data);
 		}
+
 		function _update($id, $data)
 		{
 			$this->load->model('Mdl_store_items');
 			$this->Mdl_store_items->_update($id, $data);
 		}
+
 		function _delete($id)
 		{
 			$this->load->model('Mdl_store_items');
 			$this->Mdl_store_items->_delete($id);
 		}
+
 		function count_where($column, $value)
 		{
 			$this->load->model('Mdl_store_items');
 			$count = $this->Mdl_store_items->count_where($column, $value);
 			return $count;
 		}
+
 		function get_max()
 		{
 			$this->load->model('Mdl_store_items');
 			$max_id = $this->Mdl_store_items->get_max();
 			return $max_id;
 		}
+
 		function _custom_query($mysql_query)
 		{
 			$this->load->model('Mdl_store_items');
 			$query = $this->Mdl_store_items->_custom_query($mysql_query);
 			return $query;
+		}
+
+		function item_check($str)
+		{
+			$item_url = url_title($str);
+			$mysql_query = "select * from store_items where item_title='$str' and item_url='$item_url'";
+			$update_id = $this->uri->segment(3);
+			if (is_numeric($update_id))
+			{
+				//this is an update
+				$mysql_query.= " and id!=$update_id";
+			}
+			$query = $this->_custom_query($mysql_query);
+			$num_rows = $query->num_rows();
+			if ($num_rows>0)
+			{
+				$this->form_validation->set_message('item_check', 'Wybierz inną nazwę produktu!');
+				return FALSE;
+			}else
+			{
+				return TRUE;
+			}
 		}
 	}
 ?>
