@@ -26,6 +26,7 @@
 				 $this->form_validation->set_rules('item_title', 'Nazwa produktu', 'required|max_length[240]|callback_item_check');
 				 $this->form_validation->set_rules('item_price', 'Cena produktu', 'required|numeric');
 				 $this->form_validation->set_rules('was_price', 'Stara cena', 'numeric');
+				 $this->form_validation->set_rules('status', 'Status', 'required|numeric');
 				 $this->form_validation->set_rules('item_description', 'Opis produktu', 'required');
 				if ($this->form_validation->run() == TRUE)
 				{
@@ -91,6 +92,7 @@
 			$data['item_price'] = $this->input->post('item_price', TRUE);
 			$data['was_price'] = $this->input->post('was_price', TRUE);
 			$data['item_description'] = $this->input->post('item_description', TRUE);
+			$data['status'] = $this->input->post('status', TRUE);			
 			return $data;
 		}
 
@@ -106,6 +108,7 @@
 				$data['big_pic'] = $row->big_pic;
 				$data['small_pic'] = $row->small_pic;
 				$data['was_price'] = $row->was_price;
+				$data['status'] = $row->status;
 			}
 			if (!isset($data))
 			{

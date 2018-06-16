@@ -38,6 +38,20 @@
 							  <div class="controls">
 									<input type="text" class="span1" name="was_price" value="<?= $was_price ?>">
 							  </div>
+							</div> 
+							<div class="control-group">
+							  <label class="control-label" for="typeahead">Status</label>
+							  <div class="controls">
+							  	<?php  
+							  		$additiolnal_dd_code = 'id="selectError3"';
+							  		$options = array(
+							  											'' => 'Wybierz status produktu',
+							  											'1' => 'Aktywny',
+							  											'0' => 'Nieaktywny',
+							  		);
+							  		echo form_dropdown('status', $options, $status, $additiolnal_dd_code);
+							  	?>
+							  </div>
 							</div>   
 							<div class="control-group hidden-phone">
 							  <label class="control-label" for="textarea2">Opis produktu</label>

@@ -28,13 +28,23 @@
 						  <tbody>
 						  	<?php foreach ($query->result() as $row) { 
 						  		$edit_item_url = base_url()."store_items/create/".$row->id;
+						  		$status = $row->status;
+						  		if ($status == 1)
+						  		{
+						  			$status_label = "success";
+						  			$status_desc = "Aktywny";
+						  		}else
+						  		{
+						  			$status_label = "default";
+						  			$status_desc = "Nieaktywny";
+						  		}
 						  	?>
 							<tr>
 								<td><?= $row->item_title ?></td>
 								<td class="center"><?= $row->item_price ?></td>
 								<td class="center"><?= $row->was_price ?></td>
 								<td class="center">
-									<span class="label label-success">Active</span>
+									<span class="label label-<?= $status_label ?>"><?= $status_desc ?></span>
 								</td>
 								<td class="center">
 									<a class="btn btn-success" href="#">
